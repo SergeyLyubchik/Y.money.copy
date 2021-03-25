@@ -20,11 +20,11 @@ window.addEventListener('DOMContentLoaded', function() {
                 },
                 getEvent = function() {
                     return event.type.search('touch') !== -1 ? event.touches[0] : event;
-                    // p.s. event - аргумент по умолчанию в функции
+                    // p.s. event - аргумент по умолчанию в функции test
                 },
                 swipeStart = function() {
                     let evt = getEvent();
-                  
+                                      
                     // берем начальную позицию курсора по оси Х
                     posInit = posX1 = evt.clientX;
                   
