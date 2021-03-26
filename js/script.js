@@ -19,20 +19,14 @@ window.addEventListener('DOMContentLoaded', function() {
                     slidesField.style.transform = `translateX(-${slideIndex * width}px)`;      
                 },
                 getEvent = function() {
-                    return event.type.search('touch') !== -1 ? event.touches[0] : event;
-                    // p.s. event - аргумент по умолчанию в функции test
+                    return event.type.search('touch') !== -1 ? event.touches[0] : event;                    
                 },
                 swipeStart = function() {
-                    let evt = getEvent();
-                                      
-                    // берем начальную позицию курсора по оси Х
-                    posInit = posX1 = evt.clientX;
-                  
-                    // убираем плавный переход, чтобы track двигался за курсором без задержки
-                    // т.к. он будет включается в функции slide()
+                    let evt = getEvent();                                      
+                    posInit = posX1 = evt.clientX;                  
+                    
                     slidesField.style.transition = '';
                   
-                    // и сразу начинаем отслеживать другие события на документе
                     document.addEventListener('touchmove', swipeAction);
                     document.addEventListener('touchend', swipeEnd);
                     document.addEventListener('mousemove', swipeAction);
@@ -40,40 +34,28 @@ window.addEventListener('DOMContentLoaded', function() {
                   },
                 swipeAction = function() {
                   let evt = getEvent(),
-                      // для более красивой записи возьмем в переменную текущее свойство transform
                     style = slidesField.style.transform,
-                      // считываем трансформацию с помощью регулярного выражения и сразу превращаем в число
                     transform = +style.match(trfRegExp)[0];
                   
                     posX2 = posX1 - evt.clientX;
                     posX1 = evt.clientX;
                   
-                    slidesField.style.transform = `translateX(${transform - posX2}px)`;
-                    // можно было бы использовать метод строк .replace():
-                    // sliderTrack.style.transform = style.replace(trfRegExp, match => match - posX2);
-                    // но в дальнейшем нам нужна будет текущая трансформация в переменной
+                    slidesField.style.transform = `translateX(${transform - posX2}px)`;                    
                 },
-                swipeEnd = function() {
-                    // финальная позиция курсора
-                    posFinal = posInit - posX1;
-                  
+                swipeEnd = function() {    
+                    posFinal = posInit - posX1;                  
                     document.removeEventListener('touchmove', swipeAction);
                     document.removeEventListener('mousemove', swipeAction);
                     document.removeEventListener('touchend', swipeEnd);
-                    document.removeEventListener('mouseup', swipeEnd);
-                  
-                    // убираем знак минус и сравниваем с порогом сдвига слайда
+                    document.removeEventListener('mouseup', swipeEnd);                
+                    
                     if (Math.abs(posFinal) > posThreshold) {
-                      // если мы тянули вправо, то уменьшаем номер текущего слайда
                       if (posInit < posX1) {
-                        slideIndex--;
-                      // если мы тянули влево, то увеличиваем номер текущего слайда
+                        slideIndex--;                      
                       } else if (posInit > posX1) {
                         slideIndex++;
                       }
-                    }
-                  
-                    // если курсор двигался, то запускаем функцию переключения слайдов
+                    }                  
                     if (posInit !== posX1) {
                       slide();
                     }
@@ -85,9 +67,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
         slidesWrapper.addEventListener('touchstart', swipeStart);
         slidesWrapper.addEventListener('mousedown', swipeStart);  
-        
-        //Arrow slider
-                
+                        
         let offset = 0;   
 
         slidesField.style.width = 100 * slides.length + '%';
