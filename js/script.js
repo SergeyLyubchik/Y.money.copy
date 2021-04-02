@@ -78,25 +78,33 @@ window.addEventListener('DOMContentLoaded', function() {
             slide.style.width = width;
         });
      
-
-        next.addEventListener('click', () => {
+        function nextSlide() {
             if(offset == +width.replace(/\D/g, '') * (slides.length - 1)) {
-                offset = 0;
+            offset = 0;
             } else {
-                offset += +width.replace(/\D/g, '');
-            }
+            offset += +width.replace(/\D/g, '');
+          }
+        slidesField.style.transform = `translateX(-${offset}px)`;
+        }
 
-            slidesField.style.transform = `translateX(-${offset}px)`;
-        });
-
-        prev.addEventListener('click', () => {
-            if(offset == 0) {
+        function prevSlide() {
+          if(offset == 0) {
                 
-                offset = +width.replace(/\D/g, '') * (slides.length - 1);
-            } else {
-                offset -= +width.replace(/\D/g, '');
-            }
+            offset = +width.replace(/\D/g, '') * (slides.length - 1);
+          } else {
+            offset -= +width.replace(/\D/g, '');
+          }
 
-            slidesField.style.transform = `translateX(-${offset}px)`;
-        });
+        slidesField.style.transform = `translateX(-${offset}px)`;
+        }
+        
+        next.addEventListener('click', nextSlide);
+
+        prev.addEventListener('click', prevSlide);
+
+        setInterval(nextSlide, 5000);
+
+        fetch('http://localhost:3000/menu')
+          .then(data => data.json())
+          .then(res => console.log(res));
 });
